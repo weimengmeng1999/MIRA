@@ -1,0 +1,224 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+        </head>
+        <body class="bg-white text-gray-900">
+        <div class="p-4">
+            <button id="stream-button" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">Enable Streaming</button>
+            <div id="conversation"></div>
+            <div id="restart-button-container" class="mt-4"></div>
+        </div>
+        
+
+        <script type="application/json" id="items-data">
+        [{"type": "message", "name": "Medical Doctor", "message": "<p>I understand you're experiencing abdominal pain. Let's start by getting a detailed understanding of your symptoms. Can you describe the pain for me? For example, where exactly is it located, how would you rate the intensity on a scale from 1 to 10, and does anything make it better or worse?<\/p>"}, {"type": "message", "name": "Patient", "message": "<p>The pain started around my belly button and then moved to the lower right side of my abdomen. I'd rate the intensity around a 7 out of 10. I haven't noticed anything specific that makes it better or worse.<\/p>"}, {"type": "message", "name": "Medical Doctor", "message": "<p>Thank you for sharing that information. It sounds like the pain has shifted location, which can be an important detail. Let's gather some more information to help us understand your condition better.<\/p>\n<p>Have you experienced any other symptoms, such as nausea, vomiting, fever, or changes in your bowel movements?<\/p>"}, {"type": "message", "name": "Patient", "message": "<p>I haven't had any nausea or vomiting, and I haven't had a fever or chills. I did have one episode of diarrhea initially.<\/p>"}, {"type": "message", "name": "Medical Doctor", "message": "<p>Thank you for providing that information. Let's continue gathering some more details.<\/p>\n<p>Do you have any past medical history that we should be aware of, such as previous surgeries, chronic illnesses, or any recent injuries?<\/p>"}, {"type": "message", "name": "Patient", "message": "<p>I have a history of seasonal and food allergies, and I've had a pilonidal cyst excision in the past. Other than that, I'm generally healthy.<\/p>"}, {"type": "message", "name": "Medical Doctor", "message": "<p>Thank you for sharing your medical history. It's helpful to know about your allergies and past surgery. Let's continue with a few more questions.<\/p>\n<p>Are you currently taking any medications, including over-the-counter drugs or supplements? And do you have any known allergies to medications?<\/p>"}, {"type": "message", "name": "Patient", "message": "<p>I'm not taking any medications at the moment. I do have allergies to certain foods and seasonal allergies, but I'm not aware of any medication allergies.<\/p>"}, {"type": "message", "name": "Medical Doctor", "message": "<p>Thank you for that information. It's good to know that you don't have any known medication allergies.<\/p>\n<p>Now, let's discuss your lifestyle. Could you tell me about your diet, exercise habits, and whether you smoke or consume alcohol?<\/p>"}, {"type": "message", "name": "Patient", "message": "<p>I try to eat a balanced diet, though I avoid foods I'm allergic to. I exercise regularly, mostly jogging and some weight training. I don't smoke, and I drink alcohol occasionally, but not excessively.<\/p>"}, {"type": "action", "action_type": "get_physical_exam_results", "action_text": "<p><strong>Performing physical examination. .. 🩺🩺🩺<\/strong><\/p>\n<p>Physical Examination:\n   On admission:  Vitals: 98.1 95 124/61 22 96%   GEN: A&amp;O, NAD HEENT: No scleral icterus, mucus membranes moist CV: RRR, No M/G/R PULM: Clear to auscultation b/l, No W/R/R ABD: Soft, very TTP RLQ, +obturator sign, -Rosving sign. No rebound, some voluntary gaurding Ext: No ___ edema, ___ warm and well perfused<\/p>"}, {"type": "action", "action_type": "generate_routine", "action_text": "<p><strong>Generating plan ... 🍓🍓🍓<\/strong><\/p>\n<p>Below is a structured sequence of next actions with “if-else” decision points, tailored to the patient’s presentation of potential appendicitis. All suggestions follow current hospital best practices.  <\/p>\n<p>1) Initial Laboratory Investigations<br />\n   • Obtain a comprehensive lab panel upon admission:<br />\n     LabRequestList:<br />\n       lab_values:<br />\n         – White Blood Cells (to assess for leukocytosis)<br />\n         – Neutrophils (differential)<br />\n         – Hemoglobin<br />\n         – Hematocrit<br />\n         – Platelet Count<br />\n         – Sodium<br />\n         – Potassium<br />\n         – Chloride<br />\n         – Bicarbonate<br />\n         – Blood Urea Nitrogen<br />\n         – Creatinine<br />\n         – Glucose<br />\n         – C-Reactive Protein (CRP)<br />\n         – Alanine Aminotransferase (ALT)<br />\n         – Asparate Aminotransferase (AST)<br />\n         – Bilirubin, Total  <\/p>\n<p>• If the patient is female of childbearing potential, add a qualitative urine pregnancy test:<br />\n     if (patient is female) then<br />\n       UrineRequestList:<br />\n         urine_values:<br />\n           – HCG, Qualitative  <\/p>\n<p>2) Urinalysis<br />\n   • Obtain a urinalysis to rule out urinary causes of right lower quadrant pain:<br />\n     UrineRequestList:<br />\n       urine_values:<br />\n         – Leukocytes<br />\n         – Nitrite<br />\n         – RBC<br />\n         – WBC<br />\n         – Protein<br />\n         – Glucose<br />\n         – pH<br />\n         – Specific Gravity  <\/p>\n<p>3) Imaging Studies for Suspected Appendicitis<br />\n   • if (Ultrasound is readily available and operator expertise is high) then<br />\n     RadiologyRequestFHIR:<br />\n       modality: Ultrasound<br />\n       region: Abdomen<br />\n       info: “Evaluate for appendicitis (RLQ tenderness).”  <\/p>\n<pre><code> else (if Ultrasound is unavailable or inconclusive) then  \n RadiologyRequestFHIR:  \n   modality: CT  \n   region: Abdomen  \n   info: “Evaluate for appendicitis with contrast if kidney function permits.”\n<\/code><\/pre>\n<p>4) Medication Management<br />\n   a) Pain Management (once serious complications are ruled out)<br />\n      MedicationRequestList:<br />\n        medications:<br />\n          – {<br />\n              \"drug_name\": \"Acetaminophen\",<br />\n              \"dosage_text\": \"650 mg orally every 6 hours as needed for pain\",<br />\n              \"dosage_value\": 650,<br />\n              \"dosage_unit\": \"mg\",<br />\n              \"period\": 6,<br />\n              \"period_unit\": \"h\",<br />\n              \"frequency\": 1,<br />\n              \"route\": \"Oral\"<br />\n            }  <\/p>\n<p>b) Antibiotic Coverage (if imaging strongly suggests appendicitis or diagnosis is highly suspected, initiate preoperative prophylaxis, no known drug allergies)<br />\n      MedicationRequestList:<br />\n        medications:<br />\n          – {<br />\n              \"drug_name\": \"Ceftriaxone\",<br />\n              \"dosage_text\": \"1 g IV every 24 hours\",<br />\n              \"dosage_value\": 1,<br />\n              \"dosage_unit\": \"g\",<br />\n              \"period\": 24,<br />\n              \"period_unit\": \"h\",<br />\n              \"frequency\": 1,<br />\n              \"route\": \"Intravenous\"<br />\n            },<br />\n          – {<br />\n              \"drug_name\": \"Metronidazole\",<br />\n              \"dosage_text\": \"500 mg IV every 8 hours\",<br />\n              \"dosage_value\": 500,<br />\n              \"dosage_unit\": \"mg\",<br />\n              \"period\": 8,<br />\n              \"period_unit\": \"h\",<br />\n              \"frequency\": 1,<br />\n              \"route\": \"Intravenous\"<br />\n            }  <\/p>\n<p>5) Surgical Intervention<br />\n   • if (appendicitis is confirmed or highly suspected based on labs + imaging) then<br />\n     – Search for the procedure:<br />\n       ProcedureSearch:<br />\n         procedure: \"laparoscopic appendectomy\"<br />\n     – Once the search confirms the procedure name, request the procedure:<br />\n       ProcedureRequestFHIR:<br />\n         procedure: \"Laparoscopic appendectomy\"  <\/p>\n<p>6) Communication and Follow-Up<br />\n   • Clearly explain the proposed actions and rationale to the patient.<br />\n   • Continue to monitor vital signs and pain level.<br />\n   • Adjust treatment as needed based on test results.  <\/p>\n<p>Use these structured steps to guide management. Only proceed with antibiotics and surgical referral after appropriate imaging and lab data support the diagnosis of appendicitis.<\/p>"}, {"type": "action", "action_type": "get_blood_value_results", "action_text": "<p><strong>Requesting patient lab values ... 🩸🩸🩸<\/strong><\/p>\n<p>White Blood Cells: 18.0 K/uL (4.0 - 11.0)\nNeutrophils: 79.7 % (50.0 - 70.0)\nHemoglobin: 15.5 g/dL (14.0 - 18.0)\nHematocrit: 45.7 % (40.0 - 52.0)\nPlatelet Count: 304.0 K/uL (150.0 - 440.0)\nSodium: 139.0 mEq/L (133.0 - 145.0)\nPotassium: 3.7 mEq/L (3.3 - 5.1)\nChloride: 101.0 mEq/L (96.0 - 108.0)\nBicarbonate: 21.0 mEq/L (22.0 - 32.0)\nUrea Nitrogen: 14.0 mg/dL (6.0 - 20.0)\nCreatinine: 0.8 mg/dL (0.5 - 1.2)\nGlucose: 121.0 mg/dL (70.0 - 100.0)\nC-Reactive Protein: N/A\nAlanine Aminotransferase (ALT): 35.0 IU/L (0.0 - 40.0)\nAsparate Aminotransferase (AST): 32.0 IU/L (0.0 - 40.0)\nBilirubin, Total: 0.6 mg/dL (0.0 - 1.5)<\/p>"}, {"type": "action", "action_type": "get_urine_value_results", "action_text": "<p><strong>Requesting patient urine values ... 💧💧💧<\/strong><\/p>\n<p>Leukocytes: N/A\nNitrite: N/A\nRBC: 1.0 #/hpf (0.0 - 2.0)\nWBC: 0.0 #/hpf (0.0 - 5.0)\nProtein: 30.0 mg/dL (nan - nan)\nGlucose: N/A\npH: 8.5 units (5.0 - 8.0)\nSpecific Gravity: 1.019   (1.001 - 1.035)<\/p>"}, {"type": "action", "action_type": "get_radiology_results", "action_text": "<p><strong>Requesting radiology examination data ... 🩻🩻🩻<\/strong><\/p>\n<p>Radiology Report (Ultrasound\nAbdomen):<\/p>\n<p>COMPARISON:\nNone.<\/p>\n<p>FINDINGS:\nSonographic evaluation of the right lower abdominal quadrant in the\nregion of the patient's pain demonstrates a noncompressible blind-ending\ntubular structure arising from the expected location of the cecum, likely the\nappendix.  This structure measures up to 1.3 cm in caliber and contains\nheterogeneous debris.  There is no significant surrounding hyperemia.  No\nperiappendiceal fluid collection is identified.<\/p>\n<p>IMPRESSION:\nFindings consistent with acute appendicitis.  No drainable fluid\ncollection.<\/p>"}, {"type": "action", "action_type": "get_medication_results", "action_text": "<p><strong>Requesting and uploading patient medication ... 💊💊💊<\/strong><\/p>\n<p>Acetaminophen: 650 mg orally every 6 hours as needed for pain 650 mg, 1 x 6h, Oral\nCeftriaxone: 1 g IV every 24 hours 1 g, 1 x 24h, Intravenous\nMetronidazole: 500 mg IV every 8 hours 500 mg, 1 x 8h, Intravenous<\/p>"}, {"type": "action", "action_type": "get_procedure_search_results", "action_text": "<p><strong>Searching for possible procedure options ... 🔍🔍🔍<\/strong><\/p>\n<p>Here are the top ten procedure options for your search:<\/p>\n<p>You can call the <code>ProcedureRequestFHIR<\/code> tool with one of the options above if you want to request one of the procedures for your patient.<\/p>"}, {"type": "action", "action_type": "get_procedure_request_results", "action_text": "<p><strong>Requesting procedure information ... 💉🏥🩹<\/strong><\/p>\n<p>Requested procedure for 'Laparoscopic appendectomy' on the system.<\/p>"}, {"type": "action", "action_type": "finish", "action_text": "<p><strong>Admitted to hospital ... 👩🏼‍⚕️👨🏿‍⚕️👩🏽‍⚕️<\/strong><\/p>\n<p>Completed the patient case ✅✅✅ with diagnosis: Acute appendicitis<\/p>"}]
+        </script>
+        
+
+        <script>
+        let streamingEnabled = false; 
+
+        const items = JSON.parse(document.getElementById('items-data').textContent);
+
+        const conversationDiv = document.getElementById('conversation');
+        const restartButtonContainer = document.getElementById('restart-button-container');
+        const streamButton = document.getElementById('stream-button');
+        let currentIndex = 0;
+
+        streamButton.addEventListener('click', () => {
+            streamingEnabled = true;
+            conversationDiv.innerHTML = '';
+            restartButtonContainer.innerHTML = '';
+            currentIndex = 0;
+            showNextItem();
+        });
+
+        function typeText(element, htmlContent, callback) {
+            let tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlContent;
+            const nodes = Array.from(tempDiv.childNodes);
+
+            function processNode(node, parent, callback) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    typeTextNode(node, parent, callback);
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    let newNode = document.createElement(node.nodeName);
+                    for (let attr of node.attributes) {
+                        newNode.setAttribute(attr.name, attr.value);
+                    }
+                    parent.appendChild(newNode);
+                    let childNodes = Array.from(node.childNodes);
+                    processNodes(childNodes, newNode, callback);
+                }
+            }
+
+            function processNodes(nodes, parent, callback) {
+                if (nodes.length === 0) {
+                    if (callback) callback();
+                    return;
+                }
+                let node = nodes.shift();
+                processNode(node, parent, function() {
+                    processNodes(nodes, parent, callback);
+                });
+            }
+
+            function typeTextNode(textNode, parent, callback) {
+                let text = textNode.textContent;
+                let index = 0;
+                let newNode = document.createTextNode('');
+                parent.appendChild(newNode);
+
+                function typeChar() {
+                    if (index < text.length) {
+                        newNode.textContent += text.charAt(index);
+                        index++;
+                        setTimeout(typeChar, 3);
+                    } else {
+                        if (callback) callback();
+                    }
+                }
+                typeChar();
+            }
+
+            processNodes(nodes, element, callback);
+        }
+
+        function showNextItem() {
+            if (!streamingEnabled) return; 
+            if (currentIndex >= items.length) {
+                showRestartButton();
+                return;
+            }
+
+            const item = items[currentIndex];
+            currentIndex++;
+
+            if (item.type === 'message') {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('flex', 'items-start', 'mb-6');
+
+                const nameColor = item.name === 'Medical Doctor' ? 'text-indigo-600' : 'text-green-600';
+                const bgColor = item.name === 'Medical Doctor' ? 'bg-indigo-50' : 'bg-green-50';
+
+                messageDiv.innerHTML = `
+                    <div class="flex-shrink-0">
+                        <div class="h-12 w-12 rounded-full flex items-center justify-center ${bgColor}">
+                            <span class="text-2xl ${nameColor} font-bold">${item.name.charAt(0)}</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-lg ${nameColor} font-semibold">${item.name}</div>
+                        <div class="mt-1 text-gray-700" id="message-content-${currentIndex}">
+                        </div>
+                    </div>
+                `;
+                conversationDiv.appendChild(messageDiv);
+
+                const messageContentDiv = document.getElementById('message-content-' + currentIndex);
+                const htmlContent = item.message;
+                typeText(messageContentDiv, htmlContent, () => {
+                    setTimeout(showNextItem, 100);
+                });
+            } else if (item.type === 'action') {
+                const colorMapping = {
+                    "get_blood_value_results": "bg-red-100 border-red-500 text-red-800",
+                    "get_medication_results": "bg-yellow-100 border-yellow-500 text-yellow-800",
+                    "get_physical_exam_results": "bg-gray-100 border-gray-500 text-gray-800",
+                    "get_microbiology_results": "bg-green-100 border-green-500 text-green-800",
+                    "get_radiology_results": "bg-blue-100 border-blue-500 text-blue-800",
+                    "get_urine_value_results": "bg-sky-100 border-sky-500 text-sky-800",
+                    "get_procedure_search_results": "bg-purple-100 border-purple-500 text-purple-800",
+                    "get_procedure_request_results": "bg-pink-100 border-pink-500 text-pink-800",
+                    "generate_routine": "bg-pink-100 border-pink-500 text-pink-800",
+                    "finish": "bg-teal-100 border-teal-500 text-teal-800",
+                };
+
+                const colorClasses = colorMapping[item.action_type] || "bg-blue-100 border-blue-500 text-blue-800";
+
+                const actionDiv = document.createElement('div');
+                actionDiv.classList.add('mb-6');
+                actionDiv.innerHTML = `
+                    <div class="border-l-4 ${colorClasses} p-6 rounded-lg shadow-md">
+                        ${item.action_text}
+                    </div>
+                `;
+                conversationDiv.appendChild(actionDiv);
+
+                setTimeout(showNextItem, 100);
+            }
+        }
+
+        function showRestartButton() {
+            restartButtonContainer.innerHTML = '';
+            const button = document.createElement('button');
+            button.classList.add('bg-indigo-600', 'text-white', 'px-4', 'py-2', 'rounded', 'hover:bg-indigo-700');
+            button.textContent = 'Restart Conversation';
+            button.addEventListener('click', () => {
+                conversationDiv.innerHTML = '';
+                restartButtonContainer.innerHTML = '';
+                currentIndex = 0;
+                showNextItem();
+            });
+            restartButtonContainer.appendChild(button);
+        }
+
+        // If streaming is not enabled, directly show all items without streaming
+        if (!streamingEnabled) {
+            for (const item of items) {
+                if (item.type === 'message') {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('flex', 'items-start', 'mb-6');
+
+                    const nameColor = item.name === 'Medical Doctor' ? 'text-indigo-600' : 'text-green-600';
+                    const bgColor = item.name === 'Medical Doctor' ? 'bg-indigo-50' : 'bg-green-50';
+
+                    messageDiv.innerHTML = `
+                        <div class="flex-shrink-0">
+                            <div class="h-12 w-12 rounded-full flex items-center justify-center ${bgColor}">
+                                <span class="text-2xl ${nameColor} font-bold">${item.name.charAt(0)}</span>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-lg ${nameColor} font-semibold">${item.name}</div>
+                            <div class="mt-1 text-gray-700">
+                                ${item.message}
+                            </div>
+                        </div>
+                    `;
+                    conversationDiv.appendChild(messageDiv);
+
+                } else if (item.type === 'action') {
+                    const colorMapping = {
+                        "get_blood_value_results": "bg-red-100 border-red-500 text-red-800",
+                        "get_medication_results": "bg-yellow-100 border-yellow-500 text-yellow-800",
+                        "get_physical_exam_results": "bg-gray-100 border-gray-500 text-gray-800",
+                        "get_microbiology_results": "bg-green-100 border-green-500 text-green-800",
+                        "get_radiology_results": "bg-blue-100 border-blue-500 text-blue-800",
+                        "get_urine_value_results": "bg-sky-100 border-sky-500 text-sky-800",
+                        "get_procedure_search_results": "bg-purple-100 border-purple-500 text-purple-800",
+                        "get_procedure_request_results": "bg-pink-100 border-pink-500 text-pink-800",
+                        "generate_routine": "bg-pink-100 border-pink-500 text-pink-800",
+                        "finish": "bg-teal-100 border-teal-500 text-teal-800",
+                    };
+
+                    const colorClasses = colorMapping[item.action_type] || "bg-blue-100 border-blue-500 text-blue-800";
+
+                    const actionDiv = document.createElement('div');
+                    actionDiv.classList.add('mb-6');
+                    actionDiv.innerHTML = `
+                        <div class="border-l-4 ${colorClasses} p-6 rounded-lg shadow-md">
+                            ${item.action_text}
+                        </div>
+                    `;
+                    conversationDiv.appendChild(actionDiv);
+                }
+            }
+        }
+        </script>
+        
+</div></body></html>

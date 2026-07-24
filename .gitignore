@@ -99,6 +99,7 @@ ipython_config.py
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
 # uv.lock
+.uv-cache/
 
 # poetry
 #   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
@@ -252,3 +253,7 @@ src/evaluations/Figure_*/
 # Large generated data formats
 *.parquet
 *.jsonl
+
+# Local tool caches (tokensave MCP server, understand-anything skill)
+.tokensave/
+.understand-anything/
